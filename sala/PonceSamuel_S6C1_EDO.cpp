@@ -33,8 +33,7 @@ int main(){
 	//calling rk4
 	rk4(h, N, sol_rk4, y_0);
 
-	std::cout << sol_rk4[78] << "\n";
-
+	
 	//making my data
 	doc(sol_e, "myout_e.dat");
 	doc(sol_rk4, "myout_rk.dat");
