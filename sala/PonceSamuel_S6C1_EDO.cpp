@@ -61,12 +61,12 @@ void rk4(double h, int n, std::array<double, N> & sol, double y_0){
 	double aux = 0.0;
 
         for (int i = 1; i<n; ++i){
-		k1 = f(sol[i-1]);
-		k2 = f(sol[i-1]+(k1/2));
-		k3 = f(sol[i-1]+(k2/2));
-		k4 = f(sol[i-1]+k3);
+		k1 = h*f(sol[i-1]);
+		k2 = h*f(sol[i-1]+(k1/2));
+		k3 = h*f(sol[i-1]+(k2/2));
+		k4 = h*f(sol[i-1]+k3);
 		aux = k1 + (2*(k2+k3)) + k4;
-		sol[i] = sol[i-1]+(h*(1.0/6.0)*aux);
+		sol[i] = sol[i-1]+((1.0/6.0)*aux);
         }
 }
 
