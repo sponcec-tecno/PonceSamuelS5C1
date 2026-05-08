@@ -21,7 +21,7 @@ int main(){
 	double ti = 0.0;//First time
 
 	//elements for euler
-	double h = (tf-ti)/N;//h for euler
+	double h = (tf-ti)/(N-1);//h for euler
 	std::array<double, N> sol_e;//where I'll save all the points for the solution
 
 	//calling euler
@@ -62,10 +62,10 @@ void rk4(double h, int n, std::array<double, N> & sol, double y_0){
 
         for (int i = 1; i<n; ++i){
 		k1 = h*f(sol[i-1]);
-		k2 = h*f(sol[i-1]+(k1/2));
-		k3 = h*f(sol[i-1]+(k2/2));
+		k2 = h*f(sol[i-1]+(k1/2.0));
+		k3 = h*f(sol[i-1]+(k2/2.0));
 		k4 = h*f(sol[i-1]+k3);
-		aux = k1 + (2*(k2+k3)) + k4;
+		aux = k1 + 2.0*k2 +2.0*k3 + k4;
 		sol[i] = sol[i-1]+((1.0/6.0)*aux);
         }
 }
