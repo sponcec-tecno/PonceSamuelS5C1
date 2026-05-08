@@ -18,8 +18,27 @@ err_e = (abs(f-euler)/(f))*100
 #RK4
 err_rk4 = (abs(f-rk)/(f))*100
 
-#Plot
-#All
+#Plots
+#euler.pdf
+fig, ((ax1, ax2)) = plt.subplots(1, 2, layout="constrained")
+
+ax1.plot(x, err_e, label="Euler", color="#54F527")
+ax1.set_xlabel('t')
+ax1.set_ylabel('Error(%)')
+ax1.legend()
+ax1.set_title("Error del método de Euler")
+
+ax2.plot(x, f, label= "Analítico", color="#F5A627")
+ax2.plot(x, euler, label="Euler", linestyle='--', color="#54F527")
+ax2.set_xlabel('t')
+ax2.set_ylabel('f(t)')
+ax2.legend()
+ax2.set_title("Solución con Euler")
+
+plt.savefig("euler.pdf")
+plt.close()
+
+#all.pdf
 fig, ((ax1, ax2)) = plt.subplots(1, 2, layout="constrained")
 
 ax1.plot(x, err_e, label="Euler", linestyle='--', color="#54F527")
