@@ -1,10 +1,16 @@
-fig.png: myout_e.dat myout_rk.dat plot.py
-	python plot.py
+all.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py myout_rk.dat myout_e.dat
+        python $<
 
-myout_e.dat: PonceSamuel_S6C1_EDO.cpp
-	g++ PonceSamuel_S6C1_EDO.cpp
-	./a.out
+rk4.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py myout_rk.dat
+        python $<
+
+euler.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py myout_e.dat
+	python $<
 
 myout_rk.dat: PonceSamuel_S6C1_EDO.cpp
-	g++ PonceSamuel_S6C1_EDO.cpp
-	./a.out
+        g++ $<
+        ./a.out
+
+myout_e.dat: PonceSamuel_S6C1_EDO.cpp
+        g++ $<
+        ./a.out
