@@ -6,8 +6,8 @@ import matplotlib.pylab as plt
 def fun(a):
   return np.exp(-a)
 
-euler=np.genfromtxt("myout_e.dat")
-rk=np.genfromtxt("myout_rk.dat")
+euler=np.genfromtxt("myout_euler.dat")
+rk=np.genfromtxt("myout_rk4.dat")
 
 x = np.linspace(0.0, 2.0, 200)
 f = fun(x)
