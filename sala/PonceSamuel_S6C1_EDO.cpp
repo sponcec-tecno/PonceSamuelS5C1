@@ -19,9 +19,10 @@ int main(){
 	//initial conditions
 	double y_0 = 1.0;//First step
 	double ti = 0.0;//First time
+	double N_float = static_cast<double>(N);
 
 	//elements for euler
-	double h = (tf-ti)/(N-1);//h for euler
+	double h = (tf-ti)/(N_float-1);//h for euler
 	std::array<double, N> sol_e;//where I'll save all the points for the solution
 
 	//calling euler
@@ -35,8 +36,8 @@ int main(){
 
 	
 	//making my data
-	doc(sol_e, "myout_e.dat");
-	doc(sol_rk4, "myout_rk.dat");
+	doc(sol_e, "myout_euler.dat");
+	doc(sol_rk4, "myout_rk4.dat");
 
 	return 0;
 }
