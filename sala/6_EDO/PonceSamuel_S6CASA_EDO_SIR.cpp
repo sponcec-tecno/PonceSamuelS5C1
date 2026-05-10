@@ -40,7 +40,6 @@ int main(){
 	sol_S[0] = S0;
 	sol_I[0] = I0;
 	sol_R[0] = R0;
-	std::cout << sol_S[0] << "\t" << h << "\n";
 
         for (int i = 1; i<N; ++i){
 		sol_S[i] = sol_S[i-1]+(h*f(people, sol_I[i-1], sol_S[i-1], "S", params));
@@ -53,12 +52,11 @@ int main(){
 
 	//calling rk4
 //	rk4(h, N, sol_rk4, y_0);
-	std::cout << sol_S[100] << "\n";
 
 	//making my data
-	doc(sol_S, "myout_S.dat");
-	doc(sol_I, "myout_I.dat");
-	doc(sol_R, "myout_R.dat");
+	doc(sol_S, "myout_S_SIR.dat");
+	doc(sol_I, "myout_I_SIR.dat");
+	doc(sol_R, "myout_R_SIR.dat");
 
 	return 0;
 }

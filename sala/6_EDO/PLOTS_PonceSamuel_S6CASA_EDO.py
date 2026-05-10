@@ -6,8 +6,8 @@ import matplotlib.pylab as plt
 def fun(a):
   return np.exp(-a)
 
-euler=np.genfromtxt("myout_euler.dat")
-rk=np.genfromtxt("myout_rk4.dat")
+euler=np.genfromtxt("myout_euler_EDO.dat")
+rk=np.genfromtxt("myout_rk4_EDO.dat")
 
 x = np.linspace(0.0, 2.0, 200)
 f = fun(x)
@@ -38,7 +38,7 @@ ax2.set_ylabel('f(t)')
 ax2.legend()
 ax2.set_title("Solución con Runge-Kutta 4")
 
-plt.savefig("rk4.pdf")
+plt.savefig("rk4_EDO.pdf")
 plt.close()
 
 #euler.pdf
@@ -56,7 +56,7 @@ ax2.set_ylabel('f(t)')
 ax2.legend()
 ax2.set_title("Solución con Euler")
 
-plt.savefig("euler.pdf")
+plt.savefig("euler_EDO.pdf")
 plt.close()
 
 #all.pdf
@@ -77,5 +77,5 @@ ax2.set_ylabel('f(t)')
 ax2.legend()
 ax2.set_title("Soluciones ambos métodos")
 
-plt.savefig("all.pdf")
+plt.savefig("all_EDO.pdf")
 plt.close()

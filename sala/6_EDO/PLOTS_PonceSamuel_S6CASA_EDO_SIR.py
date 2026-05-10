@@ -3,9 +3,9 @@ import matplotlib.pylab as plt
 
 
 #Creo mi array con el tiempo
-S=np.genfromtxt("myout_S.dat")
-I=np.genfromtxt("myout_I.dat")
-R=np.genfromtxt("myout_R.dat")
+S=np.genfromtxt("myout_S_SIR.dat")
+I=np.genfromtxt("myout_I_SIR.dat")
+R=np.genfromtxt("myout_R_SIR.dat")
 N = S + I + R
 
 x = np.linspace(0.0, 60.0, 200)
@@ -28,5 +28,5 @@ ax2.set_xlabel('Tiempo(s)')
 ax2.set_ylabel('Número de personas')
 ax2.set_title("Población en el sistema")
 
-plt.savefig("SIR.pdf")
+plt.savefig("euler_SIR.pdf")
 plt.close()
