@@ -11,11 +11,9 @@ using funptr = std::function<double(double, map&, map&)>;
 
 const int N = 200;
 
-double f_S(double people, map & s, map & p);
-double f_I(double people, map & s, map & p);
-double f_R(double people, map & s, map & p);
-double rk4(double h, double people, map & p, map s, funptr f, double y_0);
+double rk4(double h, double people, std::array<double,3> & s, map & p, funptr f, double y_0);
 void doc(std::array<double, N> & data, std::string name);
+std::array<double, 3> f(double people, std::array <double, 3> & s, map & p);
 
 int main(){
 
@@ -63,11 +61,12 @@ int main(){
 	R_rk4[0] = R0;
 
 	//calling rk4
-	map state_rk;
+	std::array<double,3> state_rk = [S0, I0, R0];
         for (int i = 1; i<N; ++i){
 		state_rk["S"] = S_rk4[i-1];
 		state_rk["I"] = I_rk4[i-1];
 		state_rk["R"] = R_rk4[i-1];
+//		std::cout << state_rk["S"];
                 S_rk4[i] = rk4(h, people, state_rk, params, f_S, S_rk4[i-1]);
                 I_rk4[i] = rk4(h, people, state_rk, params, f_I, I_rk4[i-1]);
                 R_rk4[i] = rk4(h, people, state_rk, params, f_R, R_rk4[i-1]);
@@ -83,40 +82,26 @@ int main(){
         doc(R_rk4, "myout_Rrk4_SIR.dat");
 
 	return 0;
+
+std::array<double, 3> f(double people, std::array<double, 3> & s, map & p) {
+
+	double dS = (-p["B"]*s["S"]*s["I"])/people;
+	double dI = ((p["B"]*s["S"]*s["I"])/people)-(p["r"]*s["I"]);
+	double dR = p["r"]*s["I"];
 }
 
-double f_S(double people, map & s, map & p){
-	return (-p["B"]*s["S"]*s["I"])/people;
-}
+double rk4(double h, double people, std::array<double, 3> & s, map & p, funptr f, double y_0){
 
-double f_I(double people, map & s, map & p){
-       return ((p["B"]*s["S"]*s["I"])/people)-(p["r"]*s["I"]);
-}
-
-double f_R(double people, map & s, map & p){
-	return p["r"]*s["I"];
-}
-
-double rk4(double h, double people, map & p, map s, funptr f, double y_0){
-
-	double k1 {};
-	double k2 {};
-	double k3 {};
-	double k4 {};
-	double aux {};
-	double S = s["S"];
-	double I = s["I"];
-
-	k1 = h*f(people, s, p);
-	s["S"] = S+(k1/2.0);
-	s["I"] = I+(k1/2.0);
-	std::cout << S;
+	std::array<double, 4> k {};
+	k[0] = h*f(people, s, p);
 	k2 = h*f(people, s, p);
 	s["S"] = S+(k2/2.0);
 	s["I"] = I+(k2/2.0);
+	s["R"] = R+(k2/2.0);
 	k3 = h*f(people, s, p);
         s["S"] = S+k3;
         s["I"] = I+k3;
+	s["R"] = R+k3;
 	k4 = h*f(people, s, p);
 	aux = k1 + 2.0*k2 +2.0*k3 + k4;
 	return y_0+((1.0/6.0)*aux);
