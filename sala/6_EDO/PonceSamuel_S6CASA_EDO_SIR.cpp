@@ -47,11 +47,6 @@ int main(){
 		sol_R[i] = sol_R[i-1]+(h*f(people, sol_I[i-1], sol_S[i-1], "R", params));
 	}
 
-	//elements for rk4(Runge-Kutta 4)
-//	std::array<double, N> sol_rk4;
-
-	//calling rk4
-//	rk4(h, N, sol_rk4, y_0);
 
 	//making my data
 	doc(sol_S, "myout_S_SIR.dat");
@@ -62,7 +57,7 @@ int main(){
 }
 
 double f(double people, double I, double S, std::string fun, std::map<std::string, double> & p){
-
+	//I identify for what function I'm goint to make the step
 	double x{};
 	if(fun=="S"){
 		x = (-p["B"]*S*I)/people;
@@ -76,25 +71,6 @@ double f(double people, double I, double S, std::string fun, std::map<std::strin
 
 	return x;
 }
-
-void rk4(double h, int n, std::array<double, N> & sol, double y_0){
-	sol[0] = y_0;
-	double k1 = 0.0;
-	double k2 = 0.0;
-	double k3 = 0.0;
-	double k4 = 0.0;
-	double aux = 0.0;
-
-        for (int i = 1; i<n; ++i){
-//		k1 = h*f(sol[i-1]);
-//		k2 = h*f(sol[i-1]+(k1/2.0));
-//		k3 = h*f(sol[i-1]+(k2/2.0));
-//		k4 = h*f(sol[i-1]+k3);
-//		aux = k1 + 2.0*k2 +2.0*k3 + k4;
-//		sol[i] = sol[i-1]+((1.0/6.0)*aux);
-        }
-}
-
 
 void doc(std::array<double, N> & data, std::string name){
     // Abro el archivo en modo escritura
