@@ -1,17 +1,26 @@
-.PHONY : data
-data : myout_euler.dat myout_rk4.dat myout_I.dat myout_R.dat myout_S.dat
-%.dat : PonceSamuel_S6C1_EDO.cpp PonceSamuel_S6CASA_EDO_SIR.cpp
-	g++ $<
-	./a.out
-	g++ PonceSamuel_S6CASA_EDO_SIR.cpp
-	./a.out
+.PHONY : data1
+data1 : myout_euler_EDO.dat myout_rk4_EDO.dat
+%_EDO.dat : PonceSamuel_S6CASA_EDO.cpp
+	g++ $< -o a1.out
+	./a1.out
 
-.PHONY : plots
-plots : all.pdf euler.pdf rk4.pdf SIR.pdf
+.PHONY : plot1
+plot1 : all_EDO.pdf euler_EDO.pdf rk4_EDO.pdf
 
-%.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py PLOTS_PonceSamuel_S6CASA_EDO_SIR.py myout_euler.dat myout_rk4.dat myout_S.dat myout_I.dat myout_R.dat
+%_EDO.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py myout_euler_EDO.dat myout_rk4_EDO.dat
 	python $<
-	python PLOTS_PonceSamuel_S6CASA_EDO_SIR.py
+
+.PHONY : data2
+data2 : myout_S_SIR.dat myout_I_SIR.dat myout_R_SIR.dat
+%_SIR.dat : PonceSamuel_S6CASA_EDO_SIR.cpp
+	g++ $< -o a2.out
+	./a2.out
+
+.PHONY : plot2
+plot2 : euler_SIR.pdf
+
+%_SIR.pdf: PLOTS_PonceSamuel_S6CASA_EDO_SIR.py myout_S_SIR.dat myout_I_SIR.dat myout_R_SIR.dat
+	python $<
 
 .PHONY : clean
 clean :
