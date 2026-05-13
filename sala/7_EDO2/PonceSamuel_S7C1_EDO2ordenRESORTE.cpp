@@ -13,8 +13,6 @@
 
 const int N = 200;
 
-//double f();
-void rk4(double h, int n, std::array<double, N> & sol, double y_0);
 void doc(std::array<double, N> & data, std::string name);
 
 int main(){
@@ -50,13 +48,23 @@ int main(){
 
 	//Leap-Frog
 	//preparing things for Leap-Frog
-	
+	std::array<double, N> x_lf;//saving the points for position
+	std::array<double, N> v_lf;//saving the points for velocity
 
+	//solving with leap-frog
+	x_lf[0] = x0;
+	v_lf[0] = v0+(0.5*h*(-p["k"]/p["m"])*x0);
 
+        for (int i = 1; i<N; ++i){
+                x_lf[i] = x_lf[i-1]+(h*v_lf[i-1]);
+                v_lf[i] = v_lf[i-1]+(h*(-p["k"]/p["m"])*x_lf[i-1]);
+        }
 
 	//making my data
 	doc(v_e, "myout_v_e.dat");
 	doc(x_e, "myout_x_e.dat");
+	doc(v_lf, "myout_v_lf.dat");
+	doc(x_lf, "myout_x_lf.dat");
 
 	return 0;
 }
