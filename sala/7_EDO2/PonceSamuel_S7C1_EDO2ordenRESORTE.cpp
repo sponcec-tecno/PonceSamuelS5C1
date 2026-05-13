@@ -31,27 +31,32 @@ int main(){
 	p["m"] = 0.2;
 
 
+	//Euler
 	//elements for euler
 	double N_double = static_cast<double>(N);
 	double h = (tf-ti)/(N_double-1.0);//h for euler
-	std::array<double, N> x;//saving the points for position
-	std::array<double, N> v;//saving the points for velocity
+	std::array<double, N> x_e;//saving the points for position
+	std::array<double, N> v_e;//saving the points for velocity
 
 	//solving the system with euler
-	x[0] = x0;
-	v[0] = v0;
+	x_e[0] = x0;
+	v_e[0] = v0;
 
         for (int i = 1; i<N; ++i){
-		x[i] = x[i-1]+(h*v[i-1]);
-		v[i] = v[i-1]+(h*(-p["k"]/p["m"])*x[i-1]);
+		x_e[i] = x_e[i-1]+(h*v_e[i-1]);
+		v_e[i] = v_e[i-1]+(h*(-p["k"]/p["m"])*x_e[i-1]);
 	}
 
+
+	//Leap-Frog
+	//preparing things for Leap-Frog
 	
 
 
+
 	//making my data
-	doc(v, "myout_v_e.dat");
-	doc(x, "myout_x_e.dat");
+	doc(v_e, "myout_v_e.dat");
+	doc(x_e, "myout_x_e.dat");
 
 	return 0;
 }

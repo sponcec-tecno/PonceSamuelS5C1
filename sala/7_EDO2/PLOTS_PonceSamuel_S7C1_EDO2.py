@@ -12,7 +12,7 @@ v = np.genfromtxt("myout_v_e.dat")
 #Velocidad
 fig, ax = plt.subplots()
 
-ax.plot(x, v, color="#F4F00B")
+ax.plot(t, s, color="#F4F00B")
 ax.set_xlabel('Tiempo(s)')
 ax.set_ylabel('Velocidad(m/s)')
 ax.legend()
@@ -25,7 +25,7 @@ plt.close()
 #Posición
 fig, ax = plt.subplots()
 
-ax.plot(x, s, color="#F4F00B")
+ax.plot(t, v, color="#F4F00B")
 ax.set_xlabel('Tiempo(s)')
 ax.set_ylabel('Posición(m)')
 ax.legend()
