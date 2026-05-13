@@ -13,4 +13,4 @@ plot : v.pdf x.pdf
 clean :
 	rm -f *.dat
 	rm -f *.pdf
-
+	rm -f *.out

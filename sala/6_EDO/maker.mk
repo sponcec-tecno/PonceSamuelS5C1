@@ -31,3 +31,4 @@ plot2 : euler_SIR.pdf
 clean :
 	rm -f *.dat
 	rm -f *.pdf
+	rm -f *.out
