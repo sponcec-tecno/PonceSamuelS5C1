@@ -1,7 +1,7 @@
 .PHONY : data
 data : myout_x_e.dat myout_v_e.dat myout_x_lf.dat myout_v_lf.dat
 %.dat : PonceSamuel_S7C1_EDO2ordenRESORTE.cpp
-	g++ $< -o a.out
+	g++ $<
 	./a.out
 
 .PHONY : plot
