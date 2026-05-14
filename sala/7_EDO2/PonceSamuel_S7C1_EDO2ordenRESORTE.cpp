@@ -20,7 +20,7 @@ int main(){
 
 	//initial conditions
 	double ti = 0.0;
-	double tf = 1.0;
+	double tf = 0.3;
 	double x0 = 0.1;
 	double v0 = 0.0;
 

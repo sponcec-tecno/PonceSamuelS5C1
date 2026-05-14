@@ -3,7 +3,7 @@ import matplotlib.pylab as plt
 
 #Dinámica de la partícula
 #Tiempos
-t = np.linspace(0.0, 1.0, 200)
+t = np.linspace(0.0, 0.3, 200)
 #Teórico
 A = 0.1
 k = 50
@@ -47,4 +47,23 @@ ax.set_title("Posición en función del tiempo")
 ax.legend()
 
 plt.savefig("x.pdf")
+plt.close()
+
+#Errores
+err_e = 100*np.abs(x_teo-x_e)/x_teo
+err_lf = 100*np.abs(x_teo-x_lf)/x_teo
+#Los grafico
+fig, ((ax1, ax2)) = plt.subplots(2, 1, layout="constrained")
+
+ax1.plot(t[:-30], err_e[:-30], color="#F4A20B", label="Euler")
+ax1.set_xlabel('Tiempo(s)')
+ax1.set_ylabel('Error(%)')
+ax1.set_title("Erorr de euler en función del tiempo")
+
+ax2.plot(t[:-30], err_lf[:-30], color="#5DF40B", label="Leap-Frog")
+ax2.set_xlabel('Tiempo(s)')
+ax2.set_ylabel('Error(%)')
+ax2.set_title("Erorr del Leap-frog  en función del tiempo")
+
+plt.savefig("err.pdf")
 plt.close()
