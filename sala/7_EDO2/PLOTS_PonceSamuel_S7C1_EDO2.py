@@ -50,8 +50,8 @@ plt.savefig("x.pdf")
 plt.close()
 
 #Errores
-err_e = 100*np.abs(x_teo-x_e)/x_teo
-err_lf = 100*np.abs(x_teo-x_lf)/x_teo
+err_e = x_teo-x_e
+err_lf = x_teo-x_lf
 #Los grafico
 fig, ((ax1, ax2)) = plt.subplots(2, 1, layout="constrained")
 
