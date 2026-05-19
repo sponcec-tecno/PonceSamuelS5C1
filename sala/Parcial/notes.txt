@@ -1,0 +1,8 @@
+- Aprender cómo subir archivos al Clasroom y descargarlos desde Bash
+- Dominar los algoritmos vistos en clase
+- Básicos de Python y C++
+- Capacidad de solucionar un problema numéricamente
+- Capacidad de estructurar un código correctamente
+- Manejar bien Bash
+- Pensar antes de escribir el código
+- Lleva hojas de papel :)
