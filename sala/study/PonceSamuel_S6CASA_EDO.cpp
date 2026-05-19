@@ -46,7 +46,7 @@ int main(){
 	double h1 = (tf-ti)/(n1_float-1.0);//h for euler
         std::array<double, n1> sol_eh1;//where I'll save all the points for the solution
 
-        //solving with euler
+	//solving with euler
         sol_eh1[0] = y_0;
         for (int i = 1; i<n1; ++i){
                 sol_eh1[i] = sol_eh1[i-1]+(h1*f(sol_eh1[i-1]));
