@@ -11,7 +11,7 @@ vy_e = np.genfromtxt("myout_vy_e.dat")
 #Euler
 #Posición
 fig, ax = plt.subplots()
-
+p = 80
 ax.plot(x_e, y_e, color="#F4A20B", label="Euler")
 ax.set_xlabel('Posición en x')
 ax.set_ylabel('Posición en y')
