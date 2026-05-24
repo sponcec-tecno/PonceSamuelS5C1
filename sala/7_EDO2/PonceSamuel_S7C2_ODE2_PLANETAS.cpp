@@ -1,8 +1,3 @@
-//Lado derecho de la ecuación 1 y 2.
-//Implementar las condiciones iniciales.
-//Inicializo los arrays con mis condiciones iniciales
-//Uso un for para llenar ambos arrays
-
 #include <array>
 #include <fstream>
 #include <iostream>
@@ -66,18 +61,30 @@ int main(){
 
 	//solving with leap-frog
 	x_lf[0] = x0;
-	v_lf[0] = v0+(0.5*h*(-p["G"]/p["M"])*x0);
+	y_lf[0] = y0;
+	r = std::sqrt(std::pow(x_lf[0]-xS,2.0)+std::pow(y_lf[0]-yS,2.0));
+	vx_lf[0] = vx0+(0.5*h*-((x_lf[0]-xS)*p["G"]*p["M"]/(std::pow(r,3.0))));
+	vy_lf[0] = vy0+(0.5*h*-((y_lf[0]-yS)*p["G"]*p["M"]/(std::pow(r,3.0))));
 
-//        for (int i = 1; i<N; ++i){
-//                x_lf[i] = x_lf[i-1]+(h*v_lf[i-1]);
-//                v_lf[i] = v_lf[i-1]+(h*(-p["k"]/p["m"])*x_lf[i]);
-//        }
+        for (int i = 1; i<N; ++i){
+                x_lf[i] = x_lf[i-1]+(h*vx_lf[i-1]);
+		y_lf[i] = y_lf[i-1]+(h*vy_lf[i-1]);
+		r = std::sqrt(std::pow(x_lf[i]-xS,2.0)+std::pow(y_lf[i]-yS,2.0));
+                vx_lf[i] = vx_lf[i-1]+(h*-((x_lf[i]-xS)*p["G"]*p["M"]/(std::pow(r,3.0))));
+		vy_lf[i] = vy_lf[i-1]+(h*-((y_lf[i]-yS)*p["G"]*p["M"]/(std::pow(r,3.0))));
+        }
 
 	//making my data
+	//euler
 	doc(vx_e, "myout_vx_e.dat");
 	doc(x_e, "myout_x_e.dat");
 	doc(vy_e, "myout_vy_e.dat");
 	doc(y_e, "myout_y_e.dat");
+	//leap-frog
+        doc(vx_lf, "myout_vx_lf.dat");
+        doc(x_lf, "myout_x_lf.dat");
+        doc(vy_lf, "myout_vy_lf.dat");
+        doc(y_lf, "myout_y_lf.dat");
 
 	return 0;
 }
