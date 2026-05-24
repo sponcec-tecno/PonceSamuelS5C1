@@ -3,7 +3,7 @@ import matplotlib.pylab as plt
 
 #Dinámica de la partícula
 #Tiempos
-t = np.linspace(0.0, 0.3, 200)
+t = np.linspace(0.0, 1.0, 600)
 #Teórico
 A = 0.1
 k = 50
@@ -66,4 +66,26 @@ ax2.set_ylabel('Error(%)')
 ax2.set_title("Erorr del Leap-frog  en función del tiempo")
 
 plt.savefig("err.pdf")
+plt.close()
+
+
+#Ahora con amortiguamiento
+xc_e = np.genfromtxt("myout_xc_e.dat")
+vc_e = np.genfromtxt("myout_vc_e.dat")
+t_c = np.linspace(0.0, 1.0, 600)
+
+#Grafico posición y velocidad
+fig, ((ax1, ax2)) = plt.subplots(2,1, layout="constrained")
+
+ax1.plot(t_c,xc_e, color="#F4A20B", label="Euler")
+ax1.set_xlabel('Tiempo(s)')
+ax1.set_ylabel('Posición')
+ax1.set_title("Posición del resorte con amortiguamiento")
+
+ax2.plot(t_c,vc_e, color="#F4A20B", label="Euler")
+ax2.set_xlabel('Tiempo(s)')
+ax2.set_ylabel('Velocidad')
+ax2.set_title("Velocidad del resorte con amortiguamiento")
+
+#plt.savefig("xv_c.pdf")
 plt.close()

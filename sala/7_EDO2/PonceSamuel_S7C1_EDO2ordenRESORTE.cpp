@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-const int N = 200;
+const int N = 600;
 
 void doc(std::array<double, N> & data, std::string name);
 
@@ -20,7 +20,7 @@ int main(){
 
 	//initial conditions
 	double ti = 0.0;
-	double tf = 0.3;
+	double tf = 1.0;
 	double x0 = 0.1;
 	double v0 = 0.0;
 
@@ -69,20 +69,22 @@ int main(){
 
 	//Solution for the system with cushioning
 	//new parameter
-//	p["b"] = 0.08;
+	p["b"] = 0.08;
 
 	//things for Euler
-//        std::array<double, N> xc_e;//saving the points for position
-//        std::array<double, N> vc_e;//saving the points for velocity
+        std::array<double, N> xc_e;//saving the points for position
+        std::array<double, N> vc_e;//saving the points for velocity
 
 	//solving
-//	xc_e[0] = x0;
-//	vc_e[0] = v0;
-//	for (int i = 1; i<N; ++i){
-//		xc_e[i] = xc_e[i-1]+(h*vc_e[i-1]);
-//		vc_e[i] = vc_e[i-1]+(h*(-p["k"]/p["m"])*xc_e[i-1]);
-//        }
+	xc_e[0] = x0;
+	vc_e[0] = v0;
+	for (int i = 1; i<N; ++i){
+		xc_e[i] = xc_e[i-1]+(h*vc_e[i-1]);
+		vc_e[i] = vc_e[i-1]+(h*(((-p["k"]/p["m"])*xc_e[i-1])-(p["b"]*vc_e[i-1])));
+        }
 
+	doc(vc_e, "myout_vc_e.dat");
+        doc(xc_e, "myout_xc_e.dat");
 
 	return 0;
 }
