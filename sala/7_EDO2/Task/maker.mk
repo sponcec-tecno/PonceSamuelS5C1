@@ -1,17 +1,14 @@
 #Ejercicio resorte
-#Genero los datos
-#.PHONY: data_r
-#data_r: v_e_spring.dat x_e_spring.dat v_lf_spring.dat x_lf_spring.dat vc_e_spring.dat xc_e_spring.dat vc_lf_spring.dat xc_lf_spring.dat t_spring.dat
-
-#%_spring.dat: PonceSamuel_S7CASA_EDO2ordenRESORTE.cpp
-#	g++ $< -o a1.out
-#	./a1.out
 #Hago las gráficas
-#.PHONY : plot1
-#plot1 : all_EDO.pdf euler_EDO.pdf rk4_EDO.pdf
+.PHONY : plot_r
+plot_r : v_spring.pdf x_spring.pdf x_spring.pdf xvc_spring.pdf
 
-#%_EDO.pdf: PLOTS_PonceSamuel_S6CASA_EDO.py myout_euler_EDO.dat myout_rk4_EDO.dat
-#	python $<
+%_spring.pdf: PLOTS_SamuelPonce_S7CASA_EDO2.py x_e_spring.dat v_e_spring.dat x_lf_spring.dat v_lf_spring.dat t_spring.dat xc_e_spring.dat vc_e_spring.dat xc_rk4_spring.dat xc_rk4_spring.dat
+	python $<
+
+%_spring.dat: PonceSamuel_S7CASA_EDO2ordenRESORTE.cpp
+	g++ $< -o a1.out
+	./a1.out
 
 #Ejercicio 2
 #Genero los datos
