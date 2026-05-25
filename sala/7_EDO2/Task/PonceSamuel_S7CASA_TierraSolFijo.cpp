@@ -75,15 +75,15 @@ int main(){
 
 	//making my data
 	//euler
-	doc(vx_e, "vx_e.dat");
-	doc(x_e, "x_e.dat");
-	doc(vy_e, "vy_e.dat");
-	doc(y_e, "y_e.dat");
+	doc(vx_e, "vx_e_Sf.dat");
+	doc(x_e, "x_e_Sf.dat");
+	doc(vy_e, "vy_e_Sf.dat");
+	doc(y_e, "y_e_Sf.dat");
 	//leap-frog
-        doc(vx_lf, "vx_lf.dat");
-        doc(x_lf, "x_lf.dat");
-        doc(vy_lf, "vy_lf.dat");
-        doc(y_lf, "y_lf.dat");
+        doc(vx_lf, "vx_lf_Sf.dat");
+        doc(x_lf, "x_lf_Sf.dat");
+        doc(vy_lf, "vy_lf_Sf.dat");
+        doc(y_lf, "y_lf_Sf.dat");
 
 	return 0;
 }

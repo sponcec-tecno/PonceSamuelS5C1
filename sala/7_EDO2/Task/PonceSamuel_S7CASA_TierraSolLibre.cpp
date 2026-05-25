@@ -116,27 +116,27 @@ int main(){
 	//making my data
 	//Euler
 	//Earth
-	doc(vxT_e, "vxT_e.dat");
-	doc(xT_e, "xT_e.dat");
-	doc(vyT_e, "vyT_e.dat");
-	doc(yT_e, "yT_e.dat");
+	doc(vxT_e, "vxT_e_Sm.dat");
+	doc(xT_e, "xT_e_Sm.dat");
+	doc(vyT_e, "vyT_e_Sm.dat");
+	doc(yT_e, "yT_e_Sm.dat");
 	//Sun
-	doc(vxS_e, "vxS_e.dat");
-	doc(xS_e, "xS_e.dat");
-	doc(vyS_e, "vyS_e.dat");
-	doc(yS_e, "yS_e.dat");
+	doc(vxS_e, "vxS_e_Sm.dat");
+	doc(xS_e, "xS_e_Sm.dat");
+	doc(vyS_e, "vyS_e_Sm.dat");
+	doc(yS_e, "yS_e_Sm.dat");
 
 	//Leap-frog
 	//Earth
-        doc(vxT_lf, "vxT_lf.dat");
-        doc(xT_lf, "xT_lf.dat");
-        doc(vyT_lf, "vyT_lf.dat");
-        doc(yT_lf, "yT_lf.dat");
+        doc(vxT_lf, "vxT_lf_Sm.dat");
+        doc(xT_lf, "xT_lf_Sm.dat");
+        doc(vyT_lf, "vyT_lf_Sm.dat");
+        doc(yT_lf, "yT_lf_Sm.dat");
         //Sun
-        doc(vxS_lf, "vxS_lf.dat");
-        doc(xS_lf, "xS_lf.dat");
-        doc(vyS_lf, "vyS_lf.dat");
-        doc(yS_lf, "yS_lf.dat");
+        doc(vxS_lf, "vxS_lf_Sm.dat");
+        doc(xS_lf, "xS_lf_Sm.dat");
+        doc(vyS_lf, "vyS_lf_Sm.dat");
+        doc(yS_lf, "yS_lf_Sm.dat");
 	return 0;
 }
 
