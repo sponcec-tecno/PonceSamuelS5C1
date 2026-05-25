@@ -91,5 +91,5 @@ ax2.set_ylabel('Velocidad(m/s)')
 ax2.legend()
 ax2.set_title("Velocidad del resorte")
 
-plt.savefig("xv_spring_c.pdf")
+plt.savefig("xvc_spring.pdf")
 plt.close()
