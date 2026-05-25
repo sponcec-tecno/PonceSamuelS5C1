@@ -12,7 +12,7 @@ void doc(std::array<double, N> & data, std::string name);
 int main(){
 
 
-	//initial conditions
+	//Condiciones iniciales
 	double ti = 0.0;
 	double tf = 10.0;//Años
 	double x0 = 1.000003;//UA
@@ -21,7 +21,7 @@ int main(){
 	double vy0 = 6.28;//UA/año
 	double xS = 0.01671;//Distancia del Sol al centro del sistema solar
 	double yS = 0.0;
-
+	double h = (tf-ti)/(N-1.0);//h
 
 	std::map<std::string, double> p;//the parameters/constants for modify the system
 	p["G"] = 39.41;//Constante en años, UA y MA.
@@ -29,7 +29,6 @@ int main(){
 
 	//Euler
 	//elements for euler
-	double h = (tf-ti)/(N-1.0);//h for euler
 	std::array<double, N> x_e;//saving the points for xposition
 	std::array<double, N> vx_e;//saving the points for xvelocity
 	std::array<double, N> y_e;//saving the points for yposition
@@ -76,15 +75,15 @@ int main(){
 
 	//making my data
 	//euler
-	doc(vx_e, "myout_vx_e.dat");
-	doc(x_e, "myout_x_e.dat");
-	doc(vy_e, "myout_vy_e.dat");
-	doc(y_e, "myout_y_e.dat");
+	doc(vx_e, "vx_e.dat");
+	doc(x_e, "x_e.dat");
+	doc(vy_e, "vy_e.dat");
+	doc(y_e, "y_e.dat");
 	//leap-frog
-        doc(vx_lf, "myout_vx_lf.dat");
-        doc(x_lf, "myout_x_lf.dat");
-        doc(vy_lf, "myout_vy_lf.dat");
-        doc(y_lf, "myout_y_lf.dat");
+        doc(vx_lf, "vx_lf.dat");
+        doc(x_lf, "x_lf.dat");
+        doc(vy_lf, "vy_lf.dat");
+        doc(y_lf, "y_lf.dat");
 
 	return 0;
 }
