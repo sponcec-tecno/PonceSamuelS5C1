@@ -9,7 +9,7 @@
 #include <array>
 #include <fstream>
 
-const int N = 100;
+const int N = 101;
 void doc(std::array<double, N> & data, std::string name);
 
 int main(){
@@ -32,11 +32,12 @@ int main(){
 	std::array<double, N> x0;
 	x0[0] = xi;
 	x0[N-1] = xf;
-	double h = p["L"]/N;//para calcular los x
-	for (int i = 1; i<=N/2; ++i){//de pa'rriba
+	double h = p["L"]/(N-1);//para calcular los x
+	for (int i = 1; i<(N-1)/2; ++i){//de pa'rriba
 		x0[i] = 0.1*i*h;
 	}
-	for (int i = (N/2)+1; i<N-1; ++i){//de pa'bajo
+	x0[(N-1)/2] = 0.1;
+	for (int i = ((N-1)/2)+1; i<N-1; ++i){//de pa'bajo
                 x0[i] = (-0.1*i*h)+0.2;
         }
 	//El x se ve raro al inicio, y se come un valor al final
