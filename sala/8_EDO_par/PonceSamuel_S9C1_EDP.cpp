@@ -5,6 +5,7 @@
 #include <array>
 #include <fstream>
 #include <cmath>
+#include <string>
 
 const int N = 101;
 void doc(std::array<double, N> & data, std::string name);
@@ -38,33 +39,58 @@ int main(){
                 xp[i] = (-0.1*i*h)+0.2;
         }
 
-	//doc(x0, "x.dat");
+	doc(xp, "x.dat");
 
-	double dx = xp[1]-xp[0];
-	double dt = 0.5*dx/p["c"];
+	//construyo el dt
+	double dt = 0.25*h/p["c"];
 
 	//array de x1
 	std::array<double, N> xpr;
 	xpr[0] = xi;
 	xpr[N-1] = xf;
+	double r = p["c"]*p["c"]*dt*dt/(h*h);
 	for (int i = 1; i < N-1; ++i){
-		xpr[i] = xp[i]+0.5*std::pow(p["c"]*dt/dx,2)*(xp[i+1]-2*xp[i]+xp[i-1]);
+		xpr[i] = xp[i]+0.5*r*(xp[i+1]-2.0*xp[i]+xp[i-1]);
 	}
 
-	//doc(x1, "x.dat");
+	doc(xpr, "x1.dat");
 
 	//soluciono
 	std::array<double, N> xfu;
 	xfu[0] = xi;
 	xfu[N-1] = xf;
-	double n = (tf-ti)/dt;
+	int t = 0;
+	int c = 1;
+
+	//estado inicial
+	doc(xp, "t0.dat");
+
 	for (double i = dt; i <= (tf-ti) ;i += dt){
 		for (int j = 1; j < N-1; ++j){
-			xfu[j] = 2*xpr[j]-xp[j]+std::pow(p["c"]*dt/dx,2)*(xpr[j+1]-2*xpr[j]+xpr[j-1]);
+			xfu[j] = 2.0*xpr[j]-xp[j]+r*(xpr[j+1]-2.0*xpr[j]+xpr[j-1]);
 		}
+		for (int k = 0; k<N; ++k){
+			xp[k] = xpr[k];
+			xpr[k] = xfu[k];
+		}
+		if (t%846 == 0){
+			std::string name = "t" + std::to_string(c) + ".dat";
+			doc(xpr, name);
+			++c;
+		}
+//		if (i==dt){
+//			doc(xfu, "x2.dat");
+//		}
+		++t;
 	}
 
-	
+	//los puntos horizontales
+	std::array<double, N> xh;
+	for (int i = 0; i < N; ++i){
+		xh[i] = i*h;
+	}
+
+	doc(xh, "xh.dat");
 
 	return 0;
 }
