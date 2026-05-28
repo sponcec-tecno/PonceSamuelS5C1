@@ -12,10 +12,14 @@ void doc(std::array<double, N> & data, std::string name);
 
 int main(){
 
+	//forzado?
+	bool f = 1;
+
 	//constantes
 	std::map <std::string, double> p;
 	p["c"] = 300.0;
 	p["L"] = 2.0;//metros
+	p["w"] = 80.0;//Hz
 
 	//condiciones iniciales
 	double v0 = 0.0;
@@ -28,21 +32,28 @@ int main(){
 
 	//array de x0
 	std::array<double, N> xp;
-	xp[0] = xi;
-	xp[N-1] = xf;
-	double h = p["L"]/(N-1);//para calcular los x
-	for (int i = 1; i<(N-1)/2; ++i){//de pa'rriba
-		xp[i] = 0.1*i*h;
-	}
-	xp[(N-1)/2] = 0.1;
-	for (int i = ((N-1)/2)+1; i<N-1; ++i){//de pa'bajo
-                xp[i] = (-0.1*i*h)+0.2;
-        }
+	double h = p["L"]/(N-1.0);//para calcular los x
 
+	if (f){
+		for(int i = 0; i<N; ++i){
+			xp[i] = 0.0;
+		}
+	}else{
+		xp[0] = xi;
+		xp[N-1] = xf;
+
+		for (int i = 1; i<(N-1)/2; ++i){//de pa'rriba
+			xp[i] = 0.1*i*h;
+		}
+		xp[(N-1)/2] = 0.1;
+		for (int i = ((N-1)/2)+1; i<N-1; ++i){//de pa'bajo
+        	        xp[i] = (-0.1*i*h)+0.2;
+	        }
+	}
 	doc(xp, "x.dat");
 
 	//construyo el dt
-	double dt = 0.25*h/p["c"];
+	double dt = 0.5*h/p["c"];
 
 	//array de x1
 	std::array<double, N> xpr;
@@ -50,7 +61,7 @@ int main(){
 	xpr[N-1] = xf;
 	double r = p["c"]*p["c"]*dt*dt/(h*h);
 	for (int i = 1; i < N-1; ++i){
-		xpr[i] = xp[i]+0.5*r*(xp[i+1]-2.0*xp[i]+xp[i-1]);
+		xpr[i] = xp[i]+(0.5*r*(xp[i+1]-2.0*xp[i]+xp[i-1]));
 	}
 
 	doc(xpr, "x1.dat");
@@ -67,13 +78,13 @@ int main(){
 
 	for (double i = dt; i <= (tf-ti) ;i += dt){
 		for (int j = 1; j < N-1; ++j){
-			xfu[j] = 2.0*xpr[j]-xp[j]+r*(xpr[j+1]-2.0*xpr[j]+xpr[j-1]);
+			xfu[j] = 2.0*xpr[j]-xp[j]+(r*(xpr[j+1]-2.0*xpr[j]+xpr[j-1]));
 		}
 		for (int k = 0; k<N; ++k){
 			xp[k] = xpr[k];
 			xpr[k] = xfu[k];
 		}
-		if (t%846 == 0){
+		if (t%746 == 0){
 			std::string name = "t" + std::to_string(c) + ".dat";
 			doc(xpr, name);
 			++c;
