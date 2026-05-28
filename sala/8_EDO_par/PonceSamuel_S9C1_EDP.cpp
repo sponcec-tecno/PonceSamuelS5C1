@@ -8,6 +8,7 @@
 #include <map>
 #include <array>
 #include <fstream>
+#include <cmath>
 
 const int N = 101;
 void doc(std::array<double, N> & data, std::string name);
@@ -40,8 +41,29 @@ int main(){
 	for (int i = ((N-1)/2)+1; i<N-1; ++i){//de pa'bajo
                 x0[i] = (-0.1*i*h)+0.2;
         }
-	//El x se ve raro al inicio, y se come un valor al final
-	doc(x0, "x.dat");
+
+	//doc(x0, "x.dat");
+
+	double dx = x0[1]-x0[0];
+	double dt = 0.5*dx/p["c"];
+
+	//array de x1
+	std::array<double, N> x1;
+	x1[0] = 0.0;
+	x1[N-1] = 0.0;
+	for (int i = 1; i < N-1; ++i){
+		x1[i] = x0[i]+0.5*std::pow(p["c"]*dt/dx,2)*(x0[i+1]-2*x0[i]+x0[i-1]);
+	}
+
+	//Opening the file
+	std::ofstream outfile;
+	outfile.open("x.dat");
+	//Fill it with the array
+	for (double n : x1){
+		outfile << n << "\n";
+	}
+	//I close it
+	outfile.close();
 
 	return 0;
 }
