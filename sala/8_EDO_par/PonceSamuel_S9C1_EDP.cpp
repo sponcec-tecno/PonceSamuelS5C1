@@ -1,5 +1,3 @@
-//En el tiempo total debo sacar seis soluciones "arrays"
-
 #include <iostream>
 #include <map>
 #include <array>
@@ -13,13 +11,17 @@ void doc(std::array<double, N> & data, std::string name);
 int main(){
 
 	//forzado?
-	bool f = 1;
+	bool f = 0;//si lo pones en 1, descomenta una de las frecuencias w
 
 	//constantes
 	std::map <std::string, double> p;
 	p["c"] = 300.0;
 	p["L"] = 2.0;//metros
-	p["w"] = 80.0;//Hz
+//	p["w"] = 1413.7;//dos nodos
+//	p["w"] = 1885.0;//tres nodos
+//	p["w"] = 2356.2;//cuatro nodos
+//	p["w"] = 2827.4;//cinco nodos
+	p["A"] = 0.1;
 
 	//condiciones iniciales
 	double v0 = 0.0;
@@ -30,15 +32,15 @@ int main(){
 	double xi = 0.0;
 	double xf = 0.0;
 
-	//array de x0
+	//array de xp
 	std::array<double, N> xp;
 	double h = p["L"]/(N-1.0);//para calcular los x
 
-	if (f){
+	if (f){//forzado
 		for(int i = 0; i<N; ++i){
 			xp[i] = 0.0;
 		}
-	}else{
+	}else{//no forzado
 		xp[0] = xi;
 		xp[N-1] = xf;
 
@@ -50,48 +52,66 @@ int main(){
         	        xp[i] = (-0.1*i*h)+0.2;
 	        }
 	}
-	doc(xp, "x.dat");
+
 
 	//construyo el dt
 	double dt = 0.5*h/p["c"];
 
-	//array de x1
+	//array de xpr
 	std::array<double, N> xpr;
 	xpr[0] = xi;
-	xpr[N-1] = xf;
 	double r = p["c"]*p["c"]*dt*dt/(h*h);
+	if (f){//forzado
+		xpr[N-1] = p["A"]*std::sin(p["w"]*dt);
+	}else{//no-forzado
+		xpr[N-1] = xf;
+	}
+
 	for (int i = 1; i < N-1; ++i){
 		xpr[i] = xp[i]+(0.5*r*(xp[i+1]-2.0*xp[i]+xp[i-1]));
 	}
 
-	doc(xpr, "x1.dat");
 
 	//soluciono
 	std::array<double, N> xfu;
 	xfu[0] = xi;
-	xfu[N-1] = xf;
-	int t = 0;
+
+	if (f){//forzado
+                xfu[N-1] = p["A"]*std::sin(p["w"]*dt*2.0);
+        }else{//no-forzado
+		xfu[N-1] = xf;
+        }
+
+	int t = 1;
 	int c = 1;
 
 	//estado inicial
 	doc(xp, "t0.dat");
 
 	for (double i = dt; i <= (tf-ti) ;i += dt){
-		for (int j = 1; j < N-1; ++j){
+		for (int j = 1; j < N-1; ++j){//soluciono para el tiempo futuro
 			xfu[j] = 2.0*xpr[j]-xp[j]+(r*(xpr[j+1]-2.0*xpr[j]+xpr[j-1]));
 		}
-		for (int k = 0; k<N; ++k){
+
+		if(f){//para que se actualice el borde forzado
+                        xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
+                }
+
+		for (int k = 0; k<N; ++k){//actualizo el tiempo
 			xp[k] = xpr[k];
 			xpr[k] = xfu[k];
 		}
-		if (t%746 == 0){
+
+		if (t%432 == 0){//envío al doc cada  pasos
 			std::string name = "t" + std::to_string(c) + ".dat";
 			doc(xpr, name);
 			++c;
 		}
-//		if (i==dt){
-//			doc(xfu, "x2.dat");
-//		}
+
+		if(f){//para que se actualice el borde forzado
+			xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
+		}
+
 		++t;
 	}
 
