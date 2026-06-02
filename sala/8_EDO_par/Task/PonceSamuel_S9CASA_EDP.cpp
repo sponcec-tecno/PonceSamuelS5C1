@@ -11,7 +11,7 @@ void doc(std::array<double, N> & data, std::string name);
 int main(){
 
 	//forzado?
-	bool f = 0;//si lo pones en 1, descomenta una de las frecuencias w
+	bool f = 0;//si lo pones en 1 (lo quieres forzado), entonces descomenta una de las frecuencias w
 
 	//constantes
 	std::map <std::string, double> p;
