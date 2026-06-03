@@ -70,10 +70,10 @@ int main(){
 	double x = p["v"]*dt/(dx*dx);
 	double y = p["v"]*dt/(dy*dy);
 
-	std::cout << dt;
+//	std::cout << dt;
 
 	//estado inicial
-//	doc(xp, "t0.dat");
+	doc(Tpr, "T0.dat");
 
 	for (double i = dt; i <= (tf-ti) ; i += dt){
 		for (int k = 1; k < N-1; ++k){//soluciono para el tiempo futuro
@@ -93,20 +93,20 @@ int main(){
 			}
 		}
 
-//		if (t%432 == 0){//envío al doc cada  pasos
-//			std::string name = "t" + std::to_string(c) + ".dat";
-//			doc(xpr, name);
-//			++c;
-//		}
+		if ((t == 4*100) || (t == 4*1000)){//envío al doc cuando sean 100s/1000s
+			std::string name = "T" + std::to_string(c) + ".dat";
+			doc(Tpr, name);
+			++c;
+		}
 
 //		if(f){//para que se actualice el borde forzado
 //			xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
 //		}
 
-//		++t;
+		++t;
 	}
 
-	doc(Tpr, "Tf.dat");
+	doc(Tpr, "T"+ std::to_string(c) +".dat");
 
 	//los puntos horizontales
 //	std::array<double, N> xh;

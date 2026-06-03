@@ -1,7 +1,7 @@
 .PHONY: plot
 plot: sol_difussion.pdf
 
-%.pdf: PLOTS_SamuelPonce_S10C1_2D.py Tf.dat
+%.pdf: PLOTS_SamuelPonce_S10C1_2D.py T0.dat T1.dat T2.dat T3.dat
 	python $<
 
 %.dat: PonceSamuel_S10C1_2D.cpp
