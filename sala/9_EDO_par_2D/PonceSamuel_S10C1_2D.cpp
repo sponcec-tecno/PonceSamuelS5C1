@@ -16,12 +16,12 @@ int main(){
 
 	//constantes
 	std::map <std::string, double> p;
-	p["v"] = 300.0;
+	p["v"] = 0.0001;
 	p["L"] = 1.0;//longitud de la placa en m
 
 	//condiciones iniciales
-	double tf = 0.0;
-	double ti = 2500.0;
+	double tf = 2500.0;
+	double ti = 0.0;
 	double T0C = 50.0;//para casi toda la placa
 	double T0c = 100.0;//para el cuadrado
 	std::array<double, N*N> Tpr;
@@ -44,20 +44,21 @@ int main(){
 	int l = 20;//longitud del cuadrado pequeño en cm
 	int up = (N/2)-(l/2);
         int down = (N/2)+(l/2);
-	int x = 20;//distancia del cuadrado al lado izquierdo
+	int cx = 20;//distancia del cuadrado al lado izquierdo
 
 	for (int j=up; j<down; ++j){
-		for (int i=x; i<l+x; ++i){
+		for (int i=cx; i<l+cx; ++i){
 			Tpr[N*j+i] = T0c;
 		}
 	}
 
-	doc(Tpr, "Tf.dat");
+//	doc(Tpr, "Tf.dat");
 
 	//construyo el dt
 	double dx = 0.01;
 	double dy = 0.01;
-	double lim = 0.5*dx*dx/p["v"];//el límite del dt
+//	double lim = 0.5*dx*dx/p["v"];//el límite del dt (siguiendo la misma ecuación de la ppt)
+	double lim = 0.25*(dx*dx+dy*dy)/p["v"];
 	double dt = lim*0.5;
 
 	//soluciono
@@ -66,23 +67,31 @@ int main(){
 
 	int t = 1;
 	int c = 1;
+	double x = p["v"]*dt/(dx*dx);
+	double y = p["v"]*dt/(dy*dy);
+
+	std::cout << dt;
 
 	//estado inicial
 //	doc(xp, "t0.dat");
 
-//	for (double i = dt; i <= (tf-ti) ;i += dt){
-//		for (int j = 1; j < N-1; ++j){//soluciono para el tiempo futuro
-//			xfu[j] = 2.0*xpr[j]-xp[j]+(r*(xpr[j+1]-2.0*xpr[j]+xpr[j-1]));
-//		}
+	for (double i = dt; i <= (tf-ti) ; i += dt){
+		for (int k = 1; k < N-1; ++k){//soluciono para el tiempo futuro
+			for (int j = 1; j < N-1; ++j){
+				Tfu[k*N+j] = Tpr[k*N+j]+x*(Tpr[k*N+j+1]-2*Tpr[k*N+j]+Tpr[k*N+j-1])+
+							y*(Tpr[(k+1)*N+j]-2*Tpr[k*N+j]+Tpr[(k-1)*N+j]);
+			}
+		}
 
 //		if(f){//para que se actualice el borde forzado
 //                      xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
 //              }
 
-//		for (int k = 0; k<N; ++k){//actualizo el tiempo
-//			xp[k] = xpr[k];
-//			xpr[k] = xfu[k];
-//		}
+		for (int k = 0; k < N; ++k){//actualizo el tiempo
+			for (int j = 0; j < N; ++j){//soluciono para el tiempo futuro
+				Tpr[k*N+j] = Tfu[k*N+j];
+			}
+		}
 
 //		if (t%432 == 0){//envío al doc cada  pasos
 //			std::string name = "t" + std::to_string(c) + ".dat";
@@ -95,7 +104,9 @@ int main(){
 //		}
 
 //		++t;
-//	}
+	}
+
+	doc(Tpr, "Tf.dat");
 
 	//los puntos horizontales
 //	std::array<double, N> xh;
@@ -109,13 +120,16 @@ int main(){
 }
 
 void doc(std::array<double, N*N> & data, std::string name){
-    //Opening the fil
+    //Opening the file
     std::ofstream outfile;
     outfile.open(name);
     //Fill it with the array
-    for (double n : data){
-        outfile << n << "\n";
-    }
+    for (int j=0; j<N; ++j){//Primero lleno todo con T0
+                for (int i=0; i<N-1; ++i){
+                        outfile << data[N*j+i] << "\t";
+                }
+	outfile << "\n";
+        }
     //I close it
     outfile.close();
 }
