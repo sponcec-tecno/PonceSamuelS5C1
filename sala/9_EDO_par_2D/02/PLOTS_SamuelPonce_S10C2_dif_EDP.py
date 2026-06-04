@@ -53,3 +53,10 @@ gs1.tight_layout(fig, rect=[0, 0, 1.0, 0.95])
 fig.suptitle("Placa en cuatro momentos")
 plt.savefig("sol_difussion.pdf")
 plt.close()
+
+fig, ax = plt.subplots()
+
+ax.plot(T3[50, :], color="red")
+#ax.plot(T0[50, :])
+plt.savefig("zoom.pdf")
+plt.close()

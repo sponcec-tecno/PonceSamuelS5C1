@@ -7,12 +7,13 @@
 
 const int N = 100;
 void doc(std::array<double, N*N> & data, std::string name);
-void fix(std::array<double, N*N> & s, double f);
+void fix(std::array<double, N*N> & s, double f, bool op, bool per);
 
 int main(){
 
 	//forzado?
-//	bool f = 0;//si lo pones en 1, descomenta una de las frecuencias w
+	bool open = 1;//si lo pones en 1, quieres condiciones abiertas
+	bool periodic = 0;//si lo pones en 1, asegúrate de poner en falso open
 
 	//constantes
 	std::map <std::string, double> p;
@@ -30,7 +31,7 @@ int main(){
 	double Tf = 50.0;
 
 	//llamo función para mantener la frontera fija
-	fix(Tpr, Tf);
+//	fix(Tpr, Tf, open, op);
 //	doc(Tpr, "Tf.dat");
 
 	//lleno xpr con las condiciones iniciales
@@ -54,16 +55,21 @@ int main(){
 
 //	doc(Tpr, "Tf.dat");
 
+        //llamo función para mantener la frontera
+        fix(Tpr, Tf, open, periodic);
+///      doc(Tpr, "Tf.dat");
+
+
 	//construyo el dt
 	double dx = 0.01;
 	double dy = 0.01;
 //	double lim = 0.5*dx*dx/p["v"];//el límite del dt (siguiendo la misma ecuación de la ppt)
-	double lim = 0.25*(dx*dx+dy*dy)/p["v"];
+	double lim = 0.25*(dx*dx+dy*dy)/p["v"];//luego veo lo del dt (coger el mínimo)
 	double dt = lim*0.5;
 
 	//soluciono
 	std::array<double, N*N> Tfu;
-	fix(Tfu, Tf);
+	fix(Tfu, Tf, open, periodic);//lleno la frontera
 
 	int t = 1;
 	int c = 1;
@@ -83,9 +89,9 @@ int main(){
 			}
 		}
 
-//		if(f){//para que se actualice el borde forzado
-//                      xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
-//              }
+		if(open || periodic){//para que se actualice el borde forzado
+			fix(Tfu, Tf, open, periodic);
+		}
 
 		for (int k = 0; k < N; ++k){//actualizo el tiempo
 			for (int j = 0; j < N; ++j){//soluciono para el tiempo futuro
@@ -93,15 +99,11 @@ int main(){
 			}
 		}
 
-		if ((t == 4*100) || (t == 4*1000)){//envío al doc cuando sean 100s/1000s
+		if ((t == (100/dt)) || (t == (1000/dt))){//envío al doc cuando sean 100s/1000s
 			std::string name = "T" + std::to_string(c) + ".dat";
 			doc(Tpr, name);
 			++c;
 		}
-
-//		if(f){//para que se actualice el borde forzado
-//			xfu[N-1] = p["A"]*std::sin(p["w"]*(i+2.0*dt));
-//		}
 
 		++t;
 	}
@@ -134,18 +136,37 @@ void doc(std::array<double, N*N> & data, std::string name){
     outfile.close();
 }
 
-void fix(std::array<double, N*N> & s, double f){
+void fix(std::array<double, N*N> & s, double f, bool op, bool per){
 
-	for (int i=0; i<N; ++i){//arriba de la placa
-                s[i] = f;
+
+	if(op){
+		for (int i=0; i<N; ++i){//arriba de la placa
+                        s[i] = s[N+i];
+                }
+
+                for (int j=0; j<N; ++j){//bordes
+                                s[N*j] = s[N*j+1];
+                                s[N*(j+1)-1] = s[N*(j+1)-2];
+                }
+
+                for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
+                        s[i] = s[i-N];
+                }
+	}else if(per){
+		
 	}
+	else{
+		for (int i=0; i<N; ++i){//arriba de la placa
+        	        s[i] = f;
+		}
 
-	for (int j=0; j<N; ++j){
-                        s[N*j] = f;
-			s[N*(j+1)-1] = f;
-        }
+		for (int j=0; j<N; ++j){//bordes
+                	        s[N*j] = f;
+				s[N*(j+1)-1] = f;
+        	}
 
-	for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
-		s[i] = f;
+		for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
+			s[i] = f;
+		}
 	}
 }
