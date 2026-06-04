@@ -12,7 +12,7 @@ void fix(std::array<double, N*N> & s, double f, bool op, bool per);
 int main(){
 
 	//forzado?
-	bool open = 1;//si lo pones en 1, quieres condiciones abiertas
+	bool open = 0;//si lo pones en 1, quieres condiciones abiertas
 	bool periodic = 0;//si lo pones en 1, asegúrate de poner en falso open
 
 	//constantes
@@ -89,7 +89,7 @@ int main(){
 			}
 		}
 
-		if(open || periodic){//para que se actualice el borde forzado
+		if(open || periodic){//para que se actualice la frontera
 			fix(Tfu, Tf, open, periodic);
 		}
 
@@ -139,21 +139,32 @@ void doc(std::array<double, N*N> & data, std::string name){
 void fix(std::array<double, N*N> & s, double f, bool op, bool per){
 
 
-	if(op){
+	if(op){//frontera abierta
 		for (int i=0; i<N; ++i){//arriba de la placa
                         s[i] = s[N+i];
                 }
 
                 for (int j=0; j<N; ++j){//bordes
-                                s[N*j] = s[N*j+1];
-                                s[N*(j+1)-1] = s[N*(j+1)-2];
+                                s[N*j] = s[N*j+1];//izquierdos
+                                s[N*(j+1)-1] = s[N*(j+1)-2];//derechos
                 }
 
                 for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
                         s[i] = s[i-N];
                 }
-	}else if(per){
-		
+	}else if(per){//frontera periódica
+		for (int i=0; i<N; ++i){//arriba de la placa
+			s[i] = s[(N*(N-2))+i];
+		}
+
+		for (int j=0; j<N; ++j){//bordes
+				s[N*j] = s[N*(j+1)-2];//izquierdos
+				s[N*(j+1)-1] = s[N*j+1];//derechos
+		}
+
+		for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
+			s[i] = s[i+N*(2-N)];
+		}
 	}
 	else{
 		for (int i=0; i<N; ++i){//arriba de la placa
@@ -161,8 +172,8 @@ void fix(std::array<double, N*N> & s, double f, bool op, bool per){
 		}
 
 		for (int j=0; j<N; ++j){//bordes
-                	        s[N*j] = f;
-				s[N*(j+1)-1] = f;
+                	        s[N*j] = f;//izquierdos
+				s[N*(j+1)-1] = f;//derechos
         	}
 
 		for (int i=N*(N-1); i <N*N; ++i){//abajo de la placa
