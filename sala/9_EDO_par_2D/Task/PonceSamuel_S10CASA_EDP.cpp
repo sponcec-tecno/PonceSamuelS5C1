@@ -18,7 +18,7 @@ int main(){
 
 	//-condiciones de frontera/si ambos están en 0 serán fijas
 	bool open = 0;//si lo pones en 1, quieres condiciones abiertas
-	bool periodic = 0;//si lo pones en 1, asegúrate de poner en 0 open
+	bool periodic = 1;//si lo pones en 1, asegúrate de poner en 0 open
 	double Tf = 50.0;//para frontera fija
 
 
